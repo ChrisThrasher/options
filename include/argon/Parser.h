@@ -32,8 +32,10 @@ public:
     template <typename T>
     void AddOption(T&, const std::string&, const std::string&);
 
-    void AddPosition(const std::string&, const std::string&);
+    void AddPosition(const std::string&, const std::string&, const Count = argon::SINGLE);
     auto GetPosition(const size_t) -> std::string;
+    auto GetPositions(const int) -> std::vector<std::string>;
+
     void Parse();
     auto Args() const -> std::vector<std::string>;
 };
@@ -79,12 +81,17 @@ void Parser::AddOption(T& value, const std::string& flags, const std::string& de
         flags, description, [&value](const std::string& s) { std::istringstream(s) >> value; }));
 }
 
-void Parser::AddPosition(const std::string& name, const std::string& description)
+void Parser::AddPosition(const std::string& name, const std::string& description, const Count count)
 {
-    m_positions.push_back(argon::Position(name, description));
+    m_positions.push_back(argon::Position(name, description, count));
 }
 
 auto Parser::GetPosition(const size_t index) -> std::string { return Args().at(index); }
+
+auto Parser::GetPositions(const int index) -> std::vector<std::string>
+{
+    return std::vector<std::string>(Args().begin() + index, Args().end());
+}
 
 void Parser::Parse()
 {

@@ -16,9 +16,11 @@ try
     parser.AddOption(speed, "speed", "Initial speed");
     parser.AddOption(output, "o,output", "Output filename");
     parser.AddPosition("filename", "Input file");
+    parser.AddPosition("args", "Various arguments", argon::VARIADIC);
     parser.Parse();
 
     const auto filename = parser.GetPosition(0);
+    const auto args = parser.GetPositions(1);
 }
 catch (const std::exception& ex)
 {
